@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { fetchWeather } from "./utils/api";
 import { useQuery } from "react-query";
@@ -22,8 +21,8 @@ function App() {
   return (
     <div>
       <h1 className="text-7xl font-bold mb-10">Weather App</h1>
-      <p className="capitalize">City: {data.address}</p>
-      <p>Temperature: {data.currentConditions.temp}°C</p>
+      <p className="capitalize">City: {data?.address}</p>
+      <p>Temperature: {data?.currentConditions.temp}°C</p>
     </div>
   );
 }
