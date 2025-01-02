@@ -19,7 +19,7 @@ function CurrentWeatherCard({ data }: { data: WeatherResponse }) {
         />
       </div>
       <div className="flex justify-between">
-        <h2 className="text-6xl font-bold">
+        <h2 className="text-7xl tracking-tighter font-bold">
           {roundUp(currentConditions.temp)}°C
         </h2>
         <div className="flex flex-col text-sm">
