@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { fetchWeather } from "./utils/api";
 import { useQuery } from "react-query";
+import CurrentWeatherCard from "./components/currentWeatherCard";
 
 function App() {
   const [city] = useState("sharm-el-sheikh");
@@ -11,8 +12,6 @@ function App() {
     error: weatherError,
   } = useQuery(["weather", city], () => fetchWeather(city), {
     enabled: !!city,
-    staleTime: 600000,
-    retry: 2,
   });
 
   if (isLoading) return <p>Fetching weather...</p>;
@@ -21,8 +20,7 @@ function App() {
   return (
     <div>
       <h1 className="text-7xl font-bold mb-10">Weather App</h1>
-      <p className="capitalize">City: {data?.address}</p>
-      <p>Temperature: {data?.currentConditions.temp}°C</p>
+      {data && <CurrentWeatherCard data={data} />}
     </div>
   );
 }
