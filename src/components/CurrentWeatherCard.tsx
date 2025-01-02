@@ -3,17 +3,17 @@ import { Card } from "./ui/card";
 import { roundUp } from "@/utils/helpers";
 
 function CurrentWeatherCard({ data }: { data: WeatherResponse }) {
-  const currentConditions = data.currentConditions;
+  const { currentConditions, address } = data;
 
   return (
-    <Card className="w-[350px] h-[220px] max-w-[85%] rounded-[6px] shadow-[10px_-2px_20px_2px_rgba(0,0,0,0.3)] text-white bg-[#22619c] my-5 mx-auto px-5 py-5 flex flex-col justify-between">
+    <Card className="w-[350px] h-[220px] max-w-[85%] rounded-md shadow-md text-white bg-[#22619c] my-5 mx-auto p-5 flex flex-col justify-between">
       <div className="flex justify-between">
-        <div className="">
-          <h2 className="text-2xl capitalize font-bold">{data.address}</h2>
-          <p className="">{currentConditions.conditions}</p>
+        <div>
+          <h2 className="text-2xl capitalize font-bold">{address}</h2>
+          <p>{currentConditions.conditions}</p>
         </div>
         <img
-          alt="weather"
+          alt="weather icon"
           src={`icons/${currentConditions.icon}.svg`}
           className="w-[90px] -mt-2 mr-3"
         />
@@ -22,30 +22,28 @@ function CurrentWeatherCard({ data }: { data: WeatherResponse }) {
         <h2 className="text-6xl font-bold">
           {roundUp(currentConditions.temp)}°C
         </h2>
-        <div className="flex flex-col items-start text-sm">
+        <div className="flex flex-col text-sm">
           <p className="underline underline-offset-2">Details:</p>
-          <p className="flex justify-between w-full">
-            <span>Humidity:</span>
-            <span className="font-bold">
-              {roundUp(currentConditions.humidity)}%
-            </span>
-          </p>
-
-          <p className="flex justify-between w-full">
-            <span>Wind:</span>
-            <span className="font-bold">
-              {currentConditions.windspeed} km/h
-            </span>
-          </p>
-          <p className="flex justify-between w-full">
-            <span>Pressure:</span>
-            <span className="font-bold ml-3">
-              {roundUp(currentConditions.pressure)} hPa
-            </span>
-          </p>
+          {[
+            {
+              label: "Humidity",
+              value: `${roundUp(currentConditions.humidity)}%`,
+            },
+            { label: "Wind", value: `${currentConditions.windspeed} km/h` },
+            {
+              label: "Pressure",
+              value: `${roundUp(currentConditions.pressure)} hPa`,
+            },
+          ].map(({ label, value }) => (
+            <p key={label} className="flex justify-between">
+              <span>{label}:</span>
+              <span className="font-bold ml-1">{value}</span>
+            </p>
+          ))}
         </div>
       </div>
     </Card>
   );
 }
+
 export default CurrentWeatherCard;
