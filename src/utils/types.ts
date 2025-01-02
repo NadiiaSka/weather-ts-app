@@ -1,13 +1,6 @@
 export type WeatherResponse = {
   address: string;
-  currentConditions: {
-    temp: number;
-    humidity: number;
-    conditions: string;
-    windspeed: number;
-    icon: string;
-    pressure: number;
-  };
+  currentConditions: DaysForecast;
   days: DaysForecast[];
 };
 
