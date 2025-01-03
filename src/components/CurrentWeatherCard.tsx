@@ -23,7 +23,7 @@ function CurrentWeatherCard({ data }: { data: WeatherResponse }) {
           {roundUp(currentConditions.temp)}°C
         </h2>
         <div className="flex flex-col text-sm">
-          <p className="underline underline-offset-2">Details:</p>
+          <p className="underline underline-offset-2 mb-1">Details:</p>
           {[
             {
               label: "Humidity",
