@@ -6,7 +6,7 @@ function CurrentWeatherCard({ data }: { data: WeatherResponse }) {
   const { currentConditions, address } = data;
 
   return (
-    <Card className="w-[350px] h-[220px] max-w-[85%] rounded-xl shadow-md text-white bg-[#22619c] my-5 mx-auto p-5 flex flex-col justify-between">
+    <Card className="w-[350px] h-[220px] max-w-[80%] rounded-xl shadow-md text-white bg-[#22619c] my-5 mx-auto p-5 flex flex-col justify-between">
       <div className="flex justify-between">
         <div>
           <h2 className="text-2xl capitalize font-bold">{address}</h2>
