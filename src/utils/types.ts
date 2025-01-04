@@ -16,4 +16,5 @@ export type DaysForecast = {
   windspeed: number;
   cloudcover: number;
   pressure: number;
+  precipprob: number;
 };
