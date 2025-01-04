@@ -18,3 +18,15 @@ export type DaysForecast = {
   pressure: number;
   precipprob: number;
 };
+
+type Coordinates = {
+  latitude: number;
+  longitude: number;
+};
+
+export type Location = {
+  coordinates: Coordinates;
+  city?: string;
+};
+
+export type LocationResponse = Coordinates;
