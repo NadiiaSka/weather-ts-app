@@ -1,26 +1,47 @@
 import { useState } from "react";
-import { fetchWeather } from "./utils/api";
+import { fetchCurrentLocation, fetchWeather } from "./utils/api";
 import { useQuery } from "react-query";
-import CurrentWeatherCard from "./components/currentWeatherCard";
+import CurrentWeatherCard from "./components/CurrentWeatherCard";
+import ForecastAccordion from "./components/ForecastAccordion";
+import { Location, LocationResponse } from "./utils/types";
 
 function App() {
-  const [city] = useState("sharm-el-sheikh");
+  const [city] = useState("kyiv");
+  const [searchData, setSearchData] = useState<Location | null>(null);
 
-  const {
-    data,
-    isLoading,
-    error: weatherError,
-  } = useQuery(["weather", city], () => fetchWeather(city), {
-    enabled: !!city,
-  });
+  // Fetch location data on application start
+  const { isLoading, isError } = useQuery<LocationResponse>(
+    "location",
+    fetchCurrentLocation,
+    {
+      onSuccess: (data) => {
+        setSearchData({
+          coordinates: {
+            latitude: data.latitude,
+            longitude: data.longitude,
+          },
+        });
+      },
+    }
+  );
+
+  console.log(searchData?.coordinates);
+
+  const { data, error: weatherError } = useQuery(
+    ["weather", city],
+    () => fetchWeather(city),
+    {
+      enabled: !!city,
+    }
+  );
 
   if (isLoading) return <p>Fetching weather...</p>;
   if (weatherError) return <p>Failed to fetch weather data.</p>;
 
   return (
     <div>
-      <h1 className="text-7xl font-bold mb-10">Weather App</h1>
       {data && <CurrentWeatherCard data={data} />}
+      {data && <ForecastAccordion data={data} />}
     </div>
   );
 }

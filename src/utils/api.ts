@@ -1,5 +1,5 @@
 import axios from "axios";
-import { WeatherResponse } from "./types";
+import { LocationResponse, WeatherResponse } from "./types";
 
 const API_BASE_URL =
   "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline";
@@ -17,4 +17,22 @@ export const fetchWeather = async (
     },
   });
   return response.data;
+};
+
+export const fetchCurrentLocation = async () => {
+  return new Promise<LocationResponse>((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          resolve({ latitude, longitude });
+        },
+        (error) => {
+          reject(error.message);
+        }
+      );
+    } else {
+      reject("Geolocation is not supported by this browser.");
+    }
+  });
 };
