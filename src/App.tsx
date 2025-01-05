@@ -14,15 +14,11 @@ function App() {
   const [location, setLocation] = useState<Location | null>(null);
 
   // Fetch location data on application start
-  const { isLoading, isError } = useQuery<Location>(
-    "location",
-    fetchCurrentLocation,
-    {
-      onSuccess: (data) => {
-        setLocation(data);
-      },
-    }
-  );
+  const { isLoading } = useQuery<Location>("location", fetchCurrentLocation, {
+    onSuccess: (data) => {
+      setLocation(data);
+    },
+  });
 
   //get a city name for the current location
   useQuery(
