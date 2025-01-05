@@ -2,14 +2,20 @@ import { WeatherResponse } from "@/utils/types";
 import { Card } from "./ui/card";
 import { roundUp } from "@/utils/helpers";
 
-function CurrentWeatherCard({ data }: { data: WeatherResponse }) {
-  const { currentConditions, address } = data;
+function CurrentWeatherCard({
+  data,
+  city,
+}: {
+  data: WeatherResponse;
+  city: string;
+}) {
+  const { currentConditions } = data;
 
   return (
     <Card className="w-[350px] h-[220px] max-w-[80%] rounded-xl shadow-md text-white bg-[#22619c] my-5 mx-auto p-5 flex flex-col justify-between">
       <div className="flex justify-between">
         <div>
-          <h2 className="text-2xl capitalize font-bold">{address}</h2>
+          <h2 className="text-2xl capitalize font-bold">{city}</h2>
           <p>{currentConditions.conditions}</p>
         </div>
         <img

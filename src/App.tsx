@@ -41,11 +41,12 @@ function App() {
     }
   );
 
-  console.log(city);
-
   const { data, error: weatherError } = useQuery(
     ["weather", city],
-    () => fetchWeather(city),
+    () =>
+      fetchWeather(
+        String(location?.latitude) + "," + String(location?.longitude)
+      ),
     {
       enabled: !!city,
     }
@@ -56,7 +57,7 @@ function App() {
 
   return (
     <div>
-      {data && <CurrentWeatherCard data={data} />}
+      {data && <CurrentWeatherCard data={data} city={city} />}
       {data && <ForecastAccordion data={data} />}
     </div>
   );
