@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LocationResponse, WeatherResponse } from "./types";
+import { Location, WeatherResponse } from "./types";
 
 const API_BASE_URL =
   "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline";
@@ -20,7 +20,7 @@ export const fetchWeather = async (
 };
 
 export const fetchCurrentLocation = async () => {
-  return new Promise<LocationResponse>((resolve, reject) => {
+  return new Promise<Location>((resolve, reject) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -35,4 +35,19 @@ export const fetchCurrentLocation = async () => {
       reject("Geolocation is not supported by this browser.");
     }
   });
+};
+
+export const fetchCurrentCity = async (searchData: Location) => {
+  const { latitude, longitude } = searchData;
+  try {
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+    );
+    const data = response.data;
+    // Extract the city name from the response
+    const city = data.address.city || data.address.town || data.address.village;
+    return city + ", " + data.address.country_code.toUpperCase();
+  } catch (error) {
+    throw new Error("Error fetching current city");
+  }
 };

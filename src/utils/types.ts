@@ -19,14 +19,7 @@ export type DaysForecast = {
   precipprob: number;
 };
 
-type Coordinates = {
+export type Location = {
   latitude: number;
   longitude: number;
 };
-
-export type Location = {
-  coordinates: Coordinates;
-  city?: string;
-};
-
-export type LocationResponse = Coordinates;

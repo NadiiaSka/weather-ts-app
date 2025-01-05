@@ -1,31 +1,47 @@
 import { useState } from "react";
-import { fetchCurrentLocation, fetchWeather } from "./utils/api";
+import {
+  fetchCurrentCity,
+  fetchCurrentLocation,
+  fetchWeather,
+} from "./utils/api";
 import { useQuery } from "react-query";
 import CurrentWeatherCard from "./components/CurrentWeatherCard";
 import ForecastAccordion from "./components/ForecastAccordion";
-import { Location, LocationResponse } from "./utils/types";
+import { Location } from "./utils/types";
 
 function App() {
-  const [city] = useState("kyiv");
-  const [searchData, setSearchData] = useState<Location | null>(null);
+  const [city, setCity] = useState("");
+  const [location, setLocation] = useState<Location | null>(null);
 
   // Fetch location data on application start
-  const { isLoading, isError } = useQuery<LocationResponse>(
+  const { isLoading, isError } = useQuery<Location>(
     "location",
     fetchCurrentLocation,
     {
       onSuccess: (data) => {
-        setSearchData({
-          coordinates: {
-            latitude: data.latitude,
-            longitude: data.longitude,
-          },
-        });
+        setLocation(data);
       },
     }
   );
 
-  console.log(searchData?.coordinates);
+  //get a city name for the current location
+  useQuery(
+    "getCityName",
+    () => {
+      if (!location) {
+        throw new Error("Location is not available");
+      }
+      return fetchCurrentCity(location);
+    },
+    {
+      enabled: !!location,
+      onSuccess: (data) => {
+        setCity(data);
+      },
+    }
+  );
+
+  console.log(city);
 
   const { data, error: weatherError } = useQuery(
     ["weather", city],
