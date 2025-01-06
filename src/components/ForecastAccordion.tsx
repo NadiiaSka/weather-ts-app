@@ -36,7 +36,7 @@ function ForecastAccordion({ data }: { data: WeatherResponse }) {
             className="bg-white rounded-xl p-3 mb-1"
           >
             <AccordionItemHeading>
-              <AccordionItemButton className="focus:outline-none hover:bg-gray-100 rounded-md">
+              <AccordionItemButton className="focus:outline-none rounded-md">
                 <div className="grid grid-cols-[1.5fr_1.7fr_5fr_1fr] sm:grid-cols-[1fr_1fr_5fr_1fr] md:grid-cols-[0.5fr_0.5fr_5fr_1fr] items-center">
                   <img
                     alt={`Weather icon for ${day.conditions}`}
