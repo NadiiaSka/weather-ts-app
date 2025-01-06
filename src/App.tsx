@@ -8,20 +8,21 @@ import { useQuery } from "react-query";
 import CurrentWeatherCard from "./components/CurrentWeatherCard";
 import ForecastAccordion from "./components/ForecastAccordion";
 import { Location } from "./utils/types";
+import Loading from "./components/Loading";
 
 function App() {
   const [city, setCity] = useState("");
   const [location, setLocation] = useState<Location | null>(null);
 
   // Fetch location data on application start
-  const { isLoading } = useQuery<Location>("location", fetchCurrentLocation, {
+  const locationQuery = useQuery<Location>("location", fetchCurrentLocation, {
     onSuccess: (data) => {
       setLocation(data);
     },
   });
 
   //get a city name for the current location
-  useQuery(
+  const cityQuery = useQuery(
     "getCityName",
     () => {
       if (!location) {
@@ -37,7 +38,7 @@ function App() {
     }
   );
 
-  const { data, error: weatherError } = useQuery(
+  const weatherQuery = useQuery(
     ["weather", city],
     () =>
       fetchWeather(
@@ -48,13 +49,21 @@ function App() {
     }
   );
 
-  if (isLoading) return <p>Fetching weather...</p>;
+  // Check if any of the queries are loading
+  const isLoading =
+    locationQuery.isLoading || cityQuery.isLoading || weatherQuery.isLoading;
+  const weatherError = weatherQuery.isError;
+
+  if (isLoading) return <Loading />;
+
   if (weatherError) return <p>Failed to fetch weather data.</p>;
 
   return (
     <div>
-      {data && <CurrentWeatherCard data={data} city={city} />}
-      {data && <ForecastAccordion data={data} />}
+      {weatherQuery.data && (
+        <CurrentWeatherCard data={weatherQuery.data} city={city} />
+      )}
+      {weatherQuery.data && <ForecastAccordion data={weatherQuery.data} />}
     </div>
   );
 }
