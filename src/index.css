@@ -62,5 +62,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: url("/background.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left;
   }
 }
