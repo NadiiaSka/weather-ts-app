@@ -33,7 +33,7 @@ function ForecastAccordion({ data }: { data: WeatherResponse }) {
         return (
           <AccordionItem
             key={day.datetime || index}
-            className="bg-white rounded-xl p-3 mb-1"
+            className="bg-white bg-opacity-80 rounded-xl p-3 mb-1 shadow-lg"
           >
             <AccordionItemHeading>
               <AccordionItemButton className="focus:outline-none rounded-md">
