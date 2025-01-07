@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Location, WeatherResponse } from "./types";
+import { City, Location, WeatherResponse } from "./types";
 
 const API_BASE_URL =
   "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline";
@@ -49,5 +49,30 @@ export const fetchCurrentCity = async (searchData: Location) => {
     return city + ", " + data.address.country_code.toUpperCase();
   } catch (error) {
     throw new Error("Error fetching current city");
+  }
+};
+
+const GEO_API_URL = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities";
+const geoApiOptions = {
+  method: "GET",
+  headers: {
+    "X-RapidAPI-Key": import.meta.env.VITE_GEO_DB_API_KEY,
+    "X-RapidAPI-Host": import.meta.env.VITE_GEO_DB_API_HOST,
+  },
+};
+
+export const fetchCityOptions = async (inputValue: string): Promise<City[]> => {
+  try {
+    const response = await axios.get(`${GEO_API_URL}`, {
+      params: {
+        minPopulation: 100000,
+        namePrefix: inputValue,
+      },
+      ...geoApiOptions,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 };

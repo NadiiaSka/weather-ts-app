@@ -23,3 +23,13 @@ export type Location = {
   latitude: number;
   longitude: number;
 };
+
+export type CityOptionResponse = {};
+
+export type City = {
+  id: number;
+  city: string;
+  countryCode: string;
+  latitude: number;
+  longitude: number;
+};
