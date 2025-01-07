@@ -9,6 +9,7 @@ import CurrentWeatherCard from "./components/CurrentWeatherCard";
 import ForecastAccordion from "./components/ForecastAccordion";
 import { Location } from "./utils/types";
 import Loading from "./components/Loading";
+import CitySearch from "./components/CitySearch";
 
 function App() {
   const [city, setCity] = useState("");
@@ -60,6 +61,7 @@ function App() {
 
   return (
     <div>
+      <CitySearch />
       {weatherQuery.data && (
         <CurrentWeatherCard data={weatherQuery.data} city={city} />
       )}
