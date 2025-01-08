@@ -23,7 +23,7 @@ function App() {
   });
 
   //get a city name for the current location
-  const cityQuery = useQuery(
+  useQuery(
     "getCityName",
     () => {
       if (!location) {
