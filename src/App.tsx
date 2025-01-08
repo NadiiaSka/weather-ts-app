@@ -7,7 +7,7 @@ import {
 import { useQuery } from "react-query";
 import CurrentWeatherCard from "./components/CurrentWeatherCard";
 import ForecastAccordion from "./components/ForecastAccordion";
-import { Location } from "./utils/types";
+import { City, Location } from "./utils/types";
 import Loading from "./components/Loading";
 import CitySearch from "./components/CitySearch";
 
@@ -59,9 +59,20 @@ function App() {
 
   if (weatherError) return <p>Failed to fetch weather data.</p>;
 
+  const handleOnSearchChange = (searchData: City | null) => {
+    if (searchData) {
+      setCity(searchData.city);
+      setLocation({
+        latitude: searchData.latitude,
+        longitude: searchData.longitude,
+      });
+    }
+    return;
+  };
+
   return (
     <div>
-      <CitySearch />
+      <CitySearch onSearchChange={handleOnSearchChange} />
       {weatherQuery.data && (
         <CurrentWeatherCard data={weatherQuery.data} city={city} />
       )}

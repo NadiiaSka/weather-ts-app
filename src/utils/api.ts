@@ -65,7 +65,7 @@ export const fetchCityOptions = async (inputValue: string): Promise<City[]> => {
   try {
     const response = await axios.get(`${GEO_API_URL}`, {
       params: {
-        minPopulation: 100000,
+        minPopulation: 1000000,
         namePrefix: inputValue,
       },
       ...geoApiOptions,
