@@ -51,8 +51,8 @@ function App() {
   );
 
   // Check if any of the queries are loading
-  const isLoading =
-    locationQuery.isLoading || cityQuery.isLoading || weatherQuery.isLoading;
+  const isLoading = locationQuery.isLoading || weatherQuery.isLoading;
+
   const weatherError = weatherQuery.isError;
 
   if (isLoading) return <Loading />;
