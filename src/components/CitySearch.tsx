@@ -32,12 +32,12 @@ const Search = ({ onSearchChange }: SearchProps) => {
   return (
     <AsyncPaginate
       placeholder="Search for a city"
-      debounceTimeout={600}
+      debounceTimeout={1000}
       value={search}
       onChange={handleOnChange}
       loadOptions={loadOptions}
       isSearchable
-      className="w-[80%] mx-auto mt-5 rounded-md"
+      className="w-[80%] mx-auto mt-5 rounded-md border border-1 border-white"
     />
   );
 };
