@@ -37,7 +37,7 @@ const Search = ({ onSearchChange }: SearchProps) => {
       onChange={handleOnChange}
       loadOptions={loadOptions}
       isSearchable
-      className="w-[80%] mx-auto mt-5 rounded-md border border-1 border-white"
+      className="w-[80%] mx-auto mt-5 rounded-md border border-white shadow-intense"
     />
   );
 };
