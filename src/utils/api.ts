@@ -1,5 +1,5 @@
 import axios from "axios";
-import { City, Location, WeatherResponse } from "./types";
+import { Location, WeatherResponse } from "./types";
 
 const API_BASE_URL =
   "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline";
@@ -25,7 +25,7 @@ export const fetchCurrentLocation = async () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          resolve({ latitude, longitude });
+          resolve({ latitude, longitude, city: null, countryCode: null });
         },
         (error) => {
           reject(error.message);
@@ -61,7 +61,9 @@ const geoApiOptions = {
   },
 };
 
-export const fetchCityOptions = async (inputValue: string): Promise<City[]> => {
+export const fetchCityOptions = async (
+  inputValue: string
+): Promise<Location[]> => {
   try {
     const response = await axios.get(`${GEO_API_URL}`, {
       params: {

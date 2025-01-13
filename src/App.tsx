@@ -7,13 +7,17 @@ import {
 import { useQuery } from "react-query";
 import CurrentWeatherCard from "./components/CurrentWeatherCard";
 import ForecastAccordion from "./components/ForecastAccordion";
-import { City, Location } from "./utils/types";
+import { Location } from "./utils/types";
 import Loading from "./components/Loading";
 import CitySearch from "./components/CitySearch";
 
 function App() {
-  const [city, setCity] = useState("");
-  const [location, setLocation] = useState<Location | null>(null);
+  const [location, setLocation] = useState<Location>({
+    city: null,
+    countryCode: null,
+    latitude: null,
+    longitude: null,
+  });
 
   // Fetch location data on application start
   const locationQuery = useQuery<Location>("location", fetchCurrentLocation, {
@@ -32,21 +36,21 @@ function App() {
       return fetchCurrentCity(location);
     },
     {
-      enabled: !!location,
+      enabled: !!location.latitude && !!location.longitude,
       onSuccess: (data) => {
-        setCity(data);
+        setLocation({ ...location, city: data });
       },
     }
   );
 
   const weatherQuery = useQuery(
-    ["weather", city],
+    ["weather", location.city],
     () =>
       fetchWeather(
         String(location?.latitude) + "," + String(location?.longitude)
       ),
     {
-      enabled: !!city,
+      enabled: !!location.city,
     }
   );
 
@@ -59,13 +63,9 @@ function App() {
 
   if (weatherError) return <p>Failed to fetch weather data.</p>;
 
-  const handleOnSearchChange = (searchData: City | null) => {
+  const handleOnSearchChange = (searchData: Location | null) => {
     if (searchData) {
-      setCity(searchData.city);
-      setLocation({
-        latitude: searchData.latitude,
-        longitude: searchData.longitude,
-      });
+      setLocation(searchData);
     }
     return;
   };
@@ -73,8 +73,8 @@ function App() {
   return (
     <div>
       <CitySearch onSearchChange={handleOnSearchChange} />
-      {weatherQuery.data && (
-        <CurrentWeatherCard data={weatherQuery.data} city={city} />
+      {weatherQuery.data && location.city && (
+        <CurrentWeatherCard data={weatherQuery.data} city={location.city} />
       )}
       {weatherQuery.data && <ForecastAccordion data={weatherQuery.data} />}
     </div>

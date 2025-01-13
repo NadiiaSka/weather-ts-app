@@ -20,16 +20,10 @@ export type DaysForecast = {
 };
 
 export type Location = {
-  latitude: number;
-  longitude: number;
+  city: string | null;
+  countryCode: string | null;
+  latitude: number | null;
+  longitude: number | null;
 };
 
 export type CityOptionResponse = {};
-
-export type City = {
-  id: number;
-  city: string;
-  countryCode: string;
-  latitude: number;
-  longitude: number;
-};
