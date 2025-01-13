@@ -21,27 +21,26 @@ function App() {
 
   // Fetch location data on application start
   const locationQuery = useQuery<Location>("location", fetchCurrentLocation, {
+    retry: 3,
     onSuccess: (data) => {
       setLocation(data);
+    },
+    onError: (error) => {
+      console.error("Error fetching location: ", error);
     },
   });
 
   //get a city name for the current location
-  useQuery(
-    "getCityName",
-    () => {
-      if (!location) {
-        throw new Error("Location is not available");
-      }
-      return fetchCurrentCity(location);
+  const cityQuery = useQuery("getCityName", () => fetchCurrentCity(location), {
+    enabled: !!location.latitude && !!location.longitude,
+    retry: 2,
+    onError: (error) => {
+      console.error("Error fetching city name: ", error);
     },
-    {
-      enabled: !!location.latitude && !!location.longitude,
-      onSuccess: (data) => {
-        setLocation({ ...location, city: data });
-      },
-    }
-  );
+    onSuccess: (city) => {
+      setLocation({ ...location, city: city });
+    },
+  });
 
   const weatherQuery = useQuery(
     ["weather", location.city],
@@ -51,17 +50,35 @@ function App() {
       ),
     {
       enabled: !!location.city,
+      retry: 3,
+      onError: (error) => {
+        console.error("Error fetching weather data: ", error);
+      },
     }
   );
 
   // Check if any of the queries are loading
   const isLoading = locationQuery.isLoading || weatherQuery.isLoading;
 
-  const weatherError = weatherQuery.isError;
-
+  const errors = {
+    location: locationQuery.isError
+      ? "Unable to fetch location data. Please enable Geolocation in the browser."
+      : null,
+    weather: weatherQuery.isError ? "Unable to fetch weather data" : null,
+    city: cityQuery.isError ? "Unable to fetch city data" : null,
+  };
   if (isLoading) return <Loading />;
 
-  if (weatherError) return <p>Failed to fetch weather data.</p>;
+  if (Object.values(errors).some(Boolean)) {
+    return (
+      <div>
+        <h2>Error</h2>
+        {errors.location && <p>{errors.location}</p>}
+        {errors.weather && <p>{errors.weather}</p>}
+        {errors.city && <p>{errors.city}</p>}
+      </div>
+    );
+  }
 
   const handleOnSearchChange = (searchData: Location | null) => {
     if (searchData) {
