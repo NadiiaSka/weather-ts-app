@@ -18,7 +18,7 @@ function ForecastAccordion({ data }: { data: WeatherResponse }) {
   }
 
   return (
-    <Accordion allowZeroExpanded className="w-[80%] mx-auto">
+    <Accordion allowZeroExpanded>
       {days.slice(1).map((day, index) => {
         const maxTemp = roundUp(day.tempmax);
         const minTemp = roundUp(day.tempmin);
