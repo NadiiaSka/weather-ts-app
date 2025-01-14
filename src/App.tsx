@@ -71,11 +71,13 @@ function App() {
 
   if (Object.values(errors).some(Boolean)) {
     return (
-      <div>
-        <h2>Error</h2>
-        {errors.location && <p>{errors.location}</p>}
-        {errors.weather && <p>{errors.weather}</p>}
-        {errors.city && <p>{errors.city}</p>}
+      <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded-md max-w-md mx-auto mt-4">
+        <h2 className="text-lg font-semibold">Error:</h2>
+        <ul className="list-disc pl-5 mt-2">
+          {errors.location && <li>{errors.location}</li>}
+          {errors.weather && <li>{errors.weather}</li>}
+          {errors.city && <li>{errors.city}</li>}
+        </ul>
       </div>
     );
   }
