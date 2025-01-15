@@ -12,7 +12,7 @@ function CurrentWeatherCard({
   const { currentConditions } = data;
 
   return (
-    <Card className="mx-auto w-[350px] h-[220px] rounded-xl shadow-lg text-white bg-[#22619c] my-5 p-5 flex flex-col justify-between border-1">
+    <Card className="max-w-[100%] mx-auto w-[350px] h-[220px] rounded-xl shadow-lg text-white bg-[#22619c] my-5 p-5 flex flex-col justify-between border-1">
       <div className="flex justify-between">
         <div>
           <h2 className="text-2xl capitalize font-bold">{city}</h2>
@@ -24,8 +24,11 @@ function CurrentWeatherCard({
           className="w-[90px] -mt-2"
         />
       </div>
-      <div className="flex justify-between">
-        <h2 className="text-7xl tracking-tighter font-bold">
+      <div className="flex justify-between items-center">
+        <h2
+          className="font-bold tracking-tighter"
+          style={{ fontSize: "clamp(3rem, 15vw, 4rem)" }}
+        >
           {roundUp(currentConditions.temp)}°C
         </h2>
         <div className="flex flex-col text-sm">
