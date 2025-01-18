@@ -1,50 +1,54 @@
-# React + TypeScript + Vite
+# Weather Forecast App 🌦️ 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live Demo: https://weather-nadiia-v2.netlify.app
 
-Currently, two official plugins are available:
+<img src="https://github.com/user-attachments/assets/d94617b4-2103-49d2-a7a1-8afa29e2538b" alt="Weather Forecast" width="300"/>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A sleek and modern weather forecast application built with React and TypeScript. This one-page app provides real-time weather updates using a free weather forecast API.
 
-## Expanding the ESLint configuration
+## Key Features  
+- **Current Weather**: View real-time weather conditions for your selected location.  
+- **Forecast**: Get a detailed weather forecast for the next four days.  
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop devices.  
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech Stack  
+- **React**  
+- **TypeScript**  
+- **shadcn/ui**  
+- **Tailwind CSS**  
+- **React Router** for navigation
 
-- Configure the top-level `parserOptions` property like this:
+## APIs used 
+- **Free Weather API** for retrieving accurate weather data: https://www.visualcrossing.com/weather-api
+- **GeoDB API** for searching cities: https://wft-geo-db.p.rapidapi.com/v1/geo/cities
+- **OpenStreetMap API** for searching cities based on the current location: https://nominatim.openstreetmap.org/
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Installation  
+1. Clone the repository:
+   
+   ```bash
+   git clone https://github.com/your-username/weather-forecast-app.git
+2. Navigate to the project directory:
+   
+   ```bash
+   cd weather-forecast-app
+3. Install dependencies:
+   
+   ```bash
+   npm install
+4. Set up the environment variables:
+   • Create a .env file in the root directory
+   • Add your API key for the weather forecast API:
+   
+   ```bash
+   VITE_WEATHER_API_KEY=your_api_key
+   VITE_GEO_DB_API_KEY=your_api_key
+5. Start the development server:
+   
+   ```bash
+   npm run dev
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## How to Use
+1. Visit the live demo.
+2. Search for your city in the search bar.
+3. View the current weather conditions and forecast.
