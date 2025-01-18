@@ -3,6 +3,7 @@
 Live Demo: https://weather-nadiia-v2.netlify.app
 
 <img src="https://github.com/user-attachments/assets/d94617b4-2103-49d2-a7a1-8afa29e2538b" alt="Weather Forecast" width="300"/>
+<img src="https://github.com/user-attachments/assets/aa1d9e28-3618-4240-bd69-03011569458f" alt="Weather Forecast" width="300"/>
 
 A sleek and modern weather forecast application built with React and TypeScript. This one-page app provides real-time weather updates using a free weather forecast API.
 
