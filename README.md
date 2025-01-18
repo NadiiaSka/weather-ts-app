@@ -38,7 +38,7 @@ A sleek and modern weather forecast application built with React and TypeScript.
    npm install
 4. Set up the environment variables:
    • Create a .env file in the root directory
-   • Add your API key for the weather forecast API:
+   • Add your API key for the Weather Forecast and the GeoDB APIs:
    
    ```bash
    VITE_WEATHER_API_KEY=your_api_key
