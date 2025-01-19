@@ -21,7 +21,7 @@ A sleek and modern weather forecast application built with React and TypeScript.
 
 ## APIs used 
 - **Free Weather API** for retrieving accurate weather data: https://www.visualcrossing.com/weather-api
-- **GeoDB API** for searching cities: https://wft-geo-db.p.rapidapi.com/v1/geo/cities
+- **GeoDB API** for searching cities: http://geodb-cities-api.wirefreethought.com/
 - **OpenStreetMap API** for searching cities based on the current location: https://nominatim.openstreetmap.org/
 
 ## Installation  
@@ -38,12 +38,13 @@ A sleek and modern weather forecast application built with React and TypeScript.
    ```bash
    npm install
 4. Set up the environment variables:
-   • Create a .env file in the root directory
-   • Add your API key for the Weather Forecast and the GeoDB APIs:
+- Create a .env file in the root directory
+- Add your API key for the Weather Forecast and the GeoDB APIs:
    
    ```bash
    VITE_WEATHER_API_KEY=your_api_key
    VITE_GEO_DB_API_KEY=your_api_key
+   ```
 5. Start the development server:
    
    ```bash
