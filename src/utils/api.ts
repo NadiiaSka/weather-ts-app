@@ -8,7 +8,7 @@ const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 export const fetchWeather = async (
   location: string
 ): Promise<WeatherResponse> => {
-  const response = await axios.get(`${API_BASE_URL}/${location}/next4days`, {
+  const response = await axios.get(`${API_BASE_URL}/${location}/next5days`, {
     params: {
       unitGroup: "metric",
       include: "days,current",
