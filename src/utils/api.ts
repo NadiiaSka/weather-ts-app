@@ -45,7 +45,11 @@ export const fetchCurrentCity = async (searchData: Location) => {
     );
     const data = response.data;
     // Extract the city name from the response
-    const city = data.address.city || data.address.town || data.address.village;
+    const city =
+      data.address.city ||
+      data.address.town ||
+      data.address.village ||
+      data.address.county;
     return city + ", " + data.address.country_code.toUpperCase();
   } catch (error) {
     throw new Error("Error fetching current city");
