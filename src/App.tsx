@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   fetchCurrentCity,
   fetchCurrentLocation,
@@ -11,87 +11,91 @@ import { Location } from "./utils/types";
 import Loading from "./components/Loading";
 import CitySearch from "./components/CitySearch";
 
-function App() {
-  const [location, setLocation] = useState<Location>({
-    city: null,
-    countryCode: null,
-    latitude: null,
-    longitude: null,
-  });
+// Load location from localStorage if available
+const getStoredLocation = (): Location | null => {
+  const savedLocation = localStorage.getItem("savedLocation");
+  return savedLocation ? JSON.parse(savedLocation) : null;
+};
 
-  // Fetch location data on application start
+function App() {
+  const [location, setLocation] = useState<Location>(
+    getStoredLocation() || {
+      city: null,
+      countryCode: null,
+      latitude: null,
+      longitude: null,
+    }
+  );
+
+  // Fetch location on mount
   const locationQuery = useQuery<Location>("location", fetchCurrentLocation, {
     retry: 3,
+    staleTime: 1000 * 60 * 5, // 5 minutes before refetching
+    cacheTime: 1000 * 60 * 10, // Cache stays for 10 minutes
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       setLocation(data);
+      localStorage.setItem("savedLocation", JSON.stringify(data));
     },
-    onError: (error) => {
-      console.error("Error fetching location: ", error);
-    },
+    onError: (error) => console.error("Error fetching location: ", error),
   });
 
-  //get a city name for the current location
+  // Fetch city name based on coordinates
   const cityQuery = useQuery("getCityName", () => fetchCurrentCity(location), {
     enabled: !!location.latitude && !!location.longitude,
     retry: 2,
-    onError: (error) => {
-      console.error("Error fetching city name: ", error);
-    },
     onSuccess: (city) => {
-      setLocation({ ...location, city: city });
+      setLocation((prev) => {
+        const updatedLocation = { ...prev, city };
+        localStorage.setItem("savedLocation", JSON.stringify(updatedLocation));
+        return updatedLocation;
+      });
     },
+    onError: (error) => console.error("Error fetching city name: ", error),
   });
 
   const weatherQuery = useQuery(
     ["weather", location.city],
-    () =>
-      fetchWeather(
-        String(location?.latitude) + "," + String(location?.longitude)
-      ),
+    () => fetchWeather(`${location.latitude},${location.longitude}`),
     {
       enabled: !!location.city,
       retry: 3,
-      onError: (error) => {
-        console.error("Error fetching weather data: ", error);
-      },
+      onSuccess: (data) =>
+        localStorage.setItem("savedWeather", JSON.stringify(data)),
+      onError: (error) => console.error("Error fetching weather data: ", error),
     }
   );
-
-  // Check if any of the queries are loading
-  const isLoading = locationQuery.isLoading || weatherQuery.isLoading;
-
-  const errors = {
-    location: locationQuery.isError
-      ? "Unable to fetch location data. Please enable Geolocation in the browser."
-      : null,
-    weather: weatherQuery.isError ? "Unable to fetch weather data" : null,
-    city: cityQuery.isError ? "Unable to fetch city data" : null,
-  };
-  if (isLoading) return <Loading />;
-
-  if (Object.values(errors).some(Boolean)) {
-    return (
-      <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded-md max-w-md mx-auto mt-4">
-        <h2 className="text-lg font-semibold">Error:</h2>
-        <ul className="list-disc pl-5 mt-2">
-          {errors.location && <li>{errors.location}</li>}
-          {errors.weather && <li>{errors.weather}</li>}
-          {errors.city && <li>{errors.city}</li>}
-        </ul>
-      </div>
-    );
-  }
 
   const handleOnSearchChange = (searchData: Location | null) => {
     if (searchData) {
       setLocation(searchData);
+      localStorage.setItem("savedLocation", JSON.stringify(searchData));
     }
-    return;
   };
+
+  const errors = {
+    location: locationQuery.isError
+      ? "Unable to fetch location. Enable Geolocation in the browser."
+      : null,
+    weather: weatherQuery.isError ? "Unable to fetch weather data." : null,
+    city: cityQuery.isError ? "Unable to fetch city name." : null,
+  };
+
+  if (locationQuery.isLoading || weatherQuery.isLoading) return <Loading />;
 
   return (
     <div>
       <CitySearch onSearchChange={handleOnSearchChange} />
+      {Object.values(errors).some(Boolean) && (
+        <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded-md max-w-md mx-auto mt-4">
+          <h2 className="text-lg font-semibold">Error:</h2>
+          <ul className="list-disc pl-5 mt-2">
+            {errors.location && <li>{errors.location}</li>}
+            {errors.weather && <li>{errors.weather}</li>}
+            {errors.city && <li>{errors.city}</li>}
+          </ul>
+        </div>
+      )}
       {weatherQuery.data && location.city && (
         <CurrentWeatherCard data={weatherQuery.data} city={location.city} />
       )}
@@ -99,4 +103,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
