@@ -42,7 +42,7 @@ function App() {
 
   // Fetch city name based on coordinates
   const cityQuery = useQuery("getCityName", () => fetchCurrentCity(location), {
-    enabled: !!location.latitude && !!location.longitude,
+    enabled: !!location.latitude && !!location.longitude && !location.city,
     retry: 2,
     onSuccess: (city) => {
       setLocation((prev) => {
