@@ -29,6 +29,11 @@ export const fetchCurrentLocation = async () => {
         },
         (error) => {
           reject(error.message);
+        },
+        {
+          enableHighAccuracy: false, // Disables GPS for a faster response
+          timeout: 5000, // Max wait time of 5 seconds
+          maximumAge: 600000, // Use cached location up to 10 minutes old
         }
       );
     } else {
@@ -44,15 +49,18 @@ export const fetchCurrentCity = async (searchData: Location) => {
       `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
     );
     const data = response.data;
+    if (!data.address) throw new Error("No address found");
+
     // Extract the city name from the response
     const city =
       data.address.city ||
       data.address.town ||
       data.address.village ||
-      data.address.county;
+      data.address.county ||
+      "Unknown location";
     return city + ", " + data.address.country_code.toUpperCase();
   } catch (error) {
-    throw new Error("Error fetching current city");
+    throw new Error("Failed to retrieve city name");
   }
 };
 
