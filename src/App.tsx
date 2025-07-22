@@ -51,7 +51,8 @@ function App() {
         return updatedLocation;
       });
     },
-    onError: (error) => console.error("Error fetching city name: ", error),
+    onError: (error: Error) =>
+      console.error("Error fetching city name: ", error),
   });
 
   const weatherQuery = useQuery(
@@ -87,9 +88,9 @@ function App() {
     <div>
       <CitySearch onSearchChange={handleOnSearchChange} />
       {Object.values(errors).some(Boolean) && (
-        <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded-md max-w-md mx-auto mt-4">
+        <div className="max-w-md p-4 mx-auto mt-4 text-red-700 bg-red-100 border border-red-400 rounded-md">
           <h2 className="text-lg font-semibold">Error:</h2>
-          <ul className="list-disc pl-5 mt-2">
+          <ul className="pl-5 mt-2 list-disc">
             {errors.location && <li>{errors.location}</li>}
             {errors.weather && <li>{errors.weather}</li>}
             {errors.city && <li>{errors.city}</li>}

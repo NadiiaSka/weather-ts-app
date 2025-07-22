@@ -46,7 +46,9 @@ export const fetchCurrentCity = async (searchData: Location) => {
   const { latitude, longitude } = searchData;
   try {
     const response = await axios.get(
-      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+      `https://us1.locationiq.com/v1/reverse?key=${
+        import.meta.env.VITE_LOCATION_IQ_API_KEY
+      }&lat=${latitude}&lon=${longitude}&format=json&`
     );
     const data = response.data;
     if (!data.address) throw new Error("No address found");
