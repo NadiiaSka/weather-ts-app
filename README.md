@@ -28,11 +28,11 @@ A sleek and modern weather forecast application built with React and TypeScript.
 1. Clone the repository:
    
    ```bash
-   git clone https://github.com/your-username/weather-forecast-app.git
+   git clone https://github.com/NadiiaSka/weather-ts-app.git
 2. Navigate to the project directory:
    
    ```bash
-   cd weather-forecast-app
+   cd weather-ts-app
 3. Install dependencies:
    
    ```bash
