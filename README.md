@@ -32,7 +32,7 @@ A sleek and modern weather forecast application built with React and TypeScript.
 2. Navigate to the project directory:
    
    ```bash
-   cd weather-forecast-app
+   cd weather-ts-app
 3. Install dependencies:
    
    ```bash
